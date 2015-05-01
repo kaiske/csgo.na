@@ -1,2 +1,2 @@
 # csgo.na
-big gatherbot
+CS:GO IRC GatherBot
