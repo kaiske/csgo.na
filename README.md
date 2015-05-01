@@ -1,0 +1,2 @@
+# csgo.na
+big gatherbot
