@@ -14,9 +14,8 @@ class ircbot:
 
 		# bot info
 
-		"nick":		"kitty___",
-		"ident":	"kitty____",
-		"realname": "kitty____",
+		"nick":		"kitty__",
+		"realname": "kitty___",
 
 		# irc info
 
