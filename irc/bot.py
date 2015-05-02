@@ -5,6 +5,8 @@ import os
 
 class ircbot:
 	sock = None;
+	data = '';
+	pongDATA = None;
 
 	info = {
 		# connection info
@@ -24,30 +26,33 @@ class ircbot:
 		"password":	"hellox86"
 	};
 
+	def PONG( self ):
+		if self.data.find( "PING" ) != -1:
+			self.sock.send( "PONG " + data.split()[ 1 ] + "\r\n" );
+
+		print( self.data );
+
 	def connect( self ):
 		self.sock = socket.socket( socket.AF_INET, socket.SOCK_STREAM );
 		self.sock.connect( ( self.info[ "ip" ], self.info[ "port" ] ) );
 
 	def login( self ):
 		self.sock.send( "NICK " + self.info[ "nick" ] + "\r\n" );
-		self.sock.send( "USER " + self.info[ "nick" ] + " 8 * :" + self.info[ "realname" ] +"\r\n" );
-		self.sock.send( "PASSWORD " + self.info[ "password" ] + "\r\n" );
+		self.sock.send( "USER " + self.info[ "nick" ] + " botxxx bot__ botxxx botxxx: Python IRC\r\n" );
+		self.sock.send( "PASS " + self.info[ "password" ] + "\r\n" );
 		self.sock.send( "JOIN " + self.info[ "channel" ] + "\r\n" );
 
 	def receive( self ):
-		line = self.sock.recv( 500 );
-		line.rstrip();
-
-		print( line );
-
-		return( line );
-
+		self.data = self.sock.recv( 4096 );
+		self.PONG();
 
 if( __name__ == "__main__" ):
 	bot = ircbot();
 
 	bot.connect();
 	bot.login();
+
+	#bot.data = bot.sock.recv( 4096 );
 
 	while( 1 ):
 		bot.receive();
