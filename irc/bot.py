@@ -9,19 +9,19 @@ class ircbot:
 	info = {
 		# connection info
 
-		"ip": 	 	"ip_here",
+		"ip": 	 	"irc.quakenet.org",
 		"port":	 	6667,
 
 		# bot info
 
-		"nick":		"bot_name_un9k",
-		"ident":	"bot_name",
-		"realname": "bot_name",
+		"nick":		"kitty___",
+		"ident":	"kitty____",
+		"realname": "kitty____",
 
 		# irc info
 
-		"owner":	"owner_name",
-		"channel":	"default_channel"
+		"owner":	"kaiske",
+		"channel":	"csgo.na"
 	};
 
 	def connect( self ):
