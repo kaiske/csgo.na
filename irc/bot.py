@@ -6,6 +6,7 @@ import os
 class ircbot:
 	sock = None;
 	data = '';
+	splitdata = '';
 	done = False;
 	joindone = False;
 	toquit = False;
@@ -37,11 +38,11 @@ class ircbot:
 	};
 
 	def parsecommand( self, text, command, offset = 1 ):
-		parse_list = text.split( );
+		parse_list = text.split();
 		loop = 0;
 
 		for value in parse_list:
-			print value;
+			#print value;
 			if( value == command ):
 				return( parse_list[ loop + offset ] );
 				break;
@@ -51,9 +52,9 @@ class ircbot:
 
 	def main( self ):
 		if( self.data.find( "PING" ) != -1 ):
-			if( self.parsecommand( self.data, "PING" ) != None ):
+			if( self.parsecommand( self.splitdata, "PING" ) != None ):
 				#print( self.parsecommand( self.data, "PING" ) );
-				self.sock.send( "PONG " + self.parsecommand( self.data, "PING" ) + "\r\n" );
+				self.sock.send( "PONG " + self.parsecommand( self.splitdata, "PING" ) + "\r\n" );
 			self.done = True;
 
 		if( self.done == True ):
@@ -71,10 +72,10 @@ class ircbot:
 			self.joindone = False;
 
 		for key, value in self.commands.iteritems():
-			if( self.parsecommand( self.data, "PRIVMSG", 2 ) != None ):
-				if( self.commands.has_key( self.parsecommand( self.data, "PRIVMSG", 2 ) ) ):
+			if( self.parsecommand( self.splitdata, "PRIVMSG", 2 ) != None ):
+				if( self.commands.has_key( self.parsecommand( self.splitdata, "PRIVMSG", 2 ) ) ):
 					args = "";
-					self.commands[ self.parsecommand( self.data, "PRIVMSG", 2 ) ]( self, args );
+					self.commands[ self.parsecommand( self.splitdata, "PRIVMSG", 2 ) ]( self, args );
 
 	def connect( self ):
 		self.sock = socket.socket( socket.AF_INET, socket.SOCK_STREAM );
@@ -88,7 +89,10 @@ class ircbot:
 
 	def receive( self ):
 		self.data = self.sock.recv( 4096 );
+		self.splitdata = ''.join( self.data );
 		self.main();
+
+		print self.data;
 
 if( __name__ == "__main__" ):
 	bot = ircbot();
