@@ -1,0 +1,89 @@
+<<< GAME PROCESS >>>
+
+when 10 people are signed
+-- > assign 2 highest players leaders (stat calculation :3fxq)
+-- > lower one picks 1st player
+-- > higher one picks his player etc until teams are full
+-- > map pick is drop/drop/pick
+-- > change server pass to something random w/ rcon and set map
+-- > send match info (players/teams/map) to db
+-- > /msg players server/mumble info
+
+players join server and play
+-- > rcon status to check which players have connected
+-- > if someone doesnt connect within 3 minutes of the match being registered theyre removed
+
+if someone leaves and isnt coming back, need()
+-- > change topic [x/10 (serverlocation)]*LIVE
+-- > /msg everyone on ringer list
+-- > first ringer to .sign gets /msg'd info
+
+when gather ends
+-- > everyone is kicked
+-- > player stats are saved on the db
+-- > game results announced in channel
+
+
+
+
+<<< USER COMMANDS >>>
+
+.register [steamid]
+-- > verify user is authed with Q
+-- > check that it begins with STEAM_1:
+-- > check that its not already in db
+-- > create user in db
+
+.sign .add
+-- > adds user to gather
+
+.leave .unsign
+-- > if player added
+
+.status
+-- > list players in gather
+-- > if live, lists gotv iP:port
+
+.ringer .ring .sub
+-- > unsigns player from gather if hes in one
+-- > adds to ringer list
+
+.ringers
+-- > print ringer list
+
+.info
+-- > checks if player is in gather
+-- > /msg player ip:port;password and mumble
+
+
+
+<<< LEADER COMMANDS >>>
+
+.pick [qAuth]
+-- > adds player to [leaders team]
+
+.drop [map]
+-- > veto map
+
+.map [map]
+-- > choose map
+
+
+
+<<< ADMIN COMMANDS >>>
+
+.rm [qAuth]
+-- > removes player from gather
+
+.ban [qAuth]
+-- > steamid ban someone
+
+.end .abort
+-- > smashes prospective gather
+
+
+
+
+
+:3fxq
+(#wins + 1)^(#wins/#losses) + fpr
