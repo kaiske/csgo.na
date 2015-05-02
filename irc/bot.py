@@ -47,7 +47,7 @@ class ircbot:
 		self.sock.connect( ( self.info[ "ip" ], self.info[ "port" ] ) );
 
 	def login( self ):
-		self.sock.send( "NICK " + self.info[ "nick" ] + "\r\n" );
+		self.sock.send( "NICK " + self.info[ "realname" ] + "\r\n" );
 		#self.sock.send( "USER " + self.info[ "nick" ] + " botxxx bot__ botxxx botxxx: Python IRC\r\n" );
 		#self.sock.send( "PASS " + self.info[ "password" ] + "\r\n" );
 		#self.sock.send( "JOIN " + self.info[ "channel" ] + "\r\n" );
