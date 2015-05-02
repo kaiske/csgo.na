@@ -8,6 +8,7 @@ class ircbot:
 	data = '';
 	done = False;
 	joindone = False;
+	toquit = False;
 
 	info = {
 		# connection info
@@ -27,19 +28,32 @@ class ircbot:
 		"password":	"hellox86"
 	};
 
+	def cmd_quit( self, args ):
+		self.sock.send( "QUIT :cufish\r\n" );
+		self.toquit = True;
+
+	commands = {
+		":.quit": cmd_quit,
+	};
+
+	def parsecommand( self, text, command, offset = 1 ):
+		parse_list = text.split( );
+		loop = 0;
+
+		for value in parse_list:
+			print value;
+			if( value == command ):
+				return( parse_list[ loop + offset ] );
+				break;
+			loop = ( loop + 1 );
+
+		return( None );
+
 	def main( self ):
 		if( self.data.find( "PING" ) != -1 ):
-			splits = self.data.split();
-			loopnum = 0;
-
-			for value in splits:
-				if( value == "PING" ):
-					print( splits[ loopnum + 1 ] );
-					self.sock.send( "PONG " + splits[ loopnum + 1 ] + "\r\n" );
-					break;
-
-				loopnum = loopnum + 1;
-
+			if( self.parsecommand( self.data, "PING" ) != None ):
+				#print( self.parsecommand( self.data, "PING" ) );
+				self.sock.send( "PONG " + self.parsecommand( self.data, "PING" ) + "\r\n" );
 			self.done = True;
 
 		if( self.done == True ):
@@ -52,11 +66,15 @@ class ircbot:
 			self.joindone = True;
 
 		if( self.joindone == True ):
-			print( "PRIVMSG Q@CServe.quakenet.org :AUTH " + self.info[ "nick" ] + " " + self.info[ "password" ] + "\r\n" );
+			#print( "PRIVMSG Q@CServe.quakenet.org :AUTH " + self.info[ "nick" ] + " " + self.info[ "password" ] + "\r\n" );
 			self.sock.send( "PRIVMSG Q@CServe.quakenet.org :AUTH " + self.info[ "nick" ] + " " + self.info[ "password" ] + "\r\n" );
 			self.joindone = False;
 
-		print( self.data );
+		for key, value in self.commands.iteritems():
+			if( self.parsecommand( self.data, "PRIVMSG", 2 ) != None ):
+				if( self.commands.has_key( self.parsecommand( self.data, "PRIVMSG", 2 ) ) ):
+					args = "";
+					self.commands[ self.parsecommand( self.data, "PRIVMSG", 2 ) ]( self, args );
 
 	def connect( self ):
 		self.sock = socket.socket( socket.AF_INET, socket.SOCK_STREAM );
@@ -82,3 +100,6 @@ if( __name__ == "__main__" ):
 
 	while( 1 ):
 		bot.receive();
+
+		if( bot.toquit == True ):
+			break;
