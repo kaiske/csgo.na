@@ -21,7 +21,7 @@ class ircbot:
 		# irc info
 
 		"owner":	"kaiske",
-		"channel":	"csgo.na"
+		"channel":	"#csgo.na"
 	};
 
 	def connect( self ):
