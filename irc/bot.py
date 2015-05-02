@@ -6,7 +6,7 @@ import os
 class ircbot:
 	sock = None;
 	data = '';
-	pongDATA = None;
+	done = False;
 
 	info = {
 		# connection info
@@ -26,9 +26,19 @@ class ircbot:
 		"password":	"hellox86"
 	};
 
-	def PONG( self ):
-		if self.data.find( "PING" ) != -1:
-			self.sock.send( "PONG " + data.split()[ 1 ] + "\r\n" );
+	def main( self ):
+		if( self.data.find( "PING" ) != -1 ):
+			self.sock.send( "PONG " + self.data.split()[ 1 ] + "\r\n" );
+			print( self.data.split()[ 1 ] );
+			self.done = True;
+
+		if( self.done == True ):
+			self.sock.send( "USER " + self.info[ "nick" ] + " botxxx bot__ botxxx botxxx: Python IRC\r\n" );
+			self.sock.send( "PASS " + self.info[ "password" ] + "\r\n" );
+			self.sock.send( "JOIN " + self.info[ "channel" ] + "\r\n" );
+			print( "PRIVMSG Q@CServe.quakenet.org \"AUTH " + self.info[ "nick" ] + " " + self.info[ "password" ] + "\"\r\n" );
+			self.sock.send( "PRIVMSG Q@CServe.quakenet.org :AUTH " + self.info[ "nick" ] + " " + self.info[ "password" ] + "\r\n" );
+			self.done = False;
 
 		print( self.data );
 
@@ -38,13 +48,13 @@ class ircbot:
 
 	def login( self ):
 		self.sock.send( "NICK " + self.info[ "nick" ] + "\r\n" );
-		self.sock.send( "USER " + self.info[ "nick" ] + " botxxx bot__ botxxx botxxx: Python IRC\r\n" );
-		self.sock.send( "PASS " + self.info[ "password" ] + "\r\n" );
-		self.sock.send( "JOIN " + self.info[ "channel" ] + "\r\n" );
+		#self.sock.send( "USER " + self.info[ "nick" ] + " botxxx bot__ botxxx botxxx: Python IRC\r\n" );
+		#self.sock.send( "PASS " + self.info[ "password" ] + "\r\n" );
+		#self.sock.send( "JOIN " + self.info[ "channel" ] + "\r\n" );
 
 	def receive( self ):
 		self.data = self.sock.recv( 4096 );
-		self.PONG();
+		self.main();
 
 if( __name__ == "__main__" ):
 	bot = ircbot();
