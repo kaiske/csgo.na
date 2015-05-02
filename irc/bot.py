@@ -7,6 +7,7 @@ class ircbot:
 	sock = None;
 	data = '';
 	done = False;
+	joindone = False;
 
 	info = {
 		# connection info
@@ -17,7 +18,6 @@ class ircbot:
 		# bot info
 
 		"nick":		"friend",
-		"realname": "GATHERBOT",
 
 		# irc info
 
@@ -36,9 +36,15 @@ class ircbot:
 			self.sock.send( "USER " + self.info[ "nick" ] + " botxxx bot__ botxxx botxxx: Python IRC\r\n" );
 			self.sock.send( "PASS " + self.info[ "password" ] + "\r\n" );
 			self.sock.send( "JOIN " + self.info[ "channel" ] + "\r\n" );
-			print( "PRIVMSG Q@CServe.quakenet.org \"AUTH " + self.info[ "nick" ] + " " + self.info[ "password" ] + "\"\r\n" );
-			self.sock.send( "PRIVMSG Q@CServe.quakenet.org :AUTH " + self.info[ "nick" ] + " " + self.info[ "password" ] + "\r\n" );
 			self.done = False;
+
+		if( self.data.find( "/NAMES list." ) != -1 ):
+			self.joindone = True;
+
+		if( self.joindone == True ):
+			print( "PRIVMSG Q@CServe.quakenet.org :AUTH " + self.info[ "nick" ] + " " + self.info[ "password" ] + "\r\n" );
+			self.sock.send( "PRIVMSG Q@CServe.quakenet.org :AUTH " + self.info[ "nick" ] + " " + self.info[ "password" ] + "\r\n" );
+			self.joindone = False;
 
 		print( self.data );
 
@@ -47,7 +53,7 @@ class ircbot:
 		self.sock.connect( ( self.info[ "ip" ], self.info[ "port" ] ) );
 
 	def login( self ):
-		self.sock.send( "NICK " + self.info[ "realname" ] + "\r\n" );
+		self.sock.send( "NICK " + self.info[ "nick" ] + "\r\n" );
 		#self.sock.send( "USER " + self.info[ "nick" ] + " botxxx bot__ botxxx botxxx: Python IRC\r\n" );
 		#self.sock.send( "PASS " + self.info[ "password" ] + "\r\n" );
 		#self.sock.send( "JOIN " + self.info[ "channel" ] + "\r\n" );
