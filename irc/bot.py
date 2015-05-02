@@ -18,6 +18,7 @@ class ircbot:
 		# bot info
 
 		"nick":		"friend",
+		"realname": "GATHERBOT.NA",
 
 		# irc info
 
