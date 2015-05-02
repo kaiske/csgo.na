@@ -25,12 +25,12 @@ class ircbot:
 	};
 
 	def connect( self ):
-		self.sock = socket.socket();
+		self.sock = socket.socket( socket.AF_INET, socket.SOCK_STREAM );
 		self.sock.connect( ( self.info[ "ip" ], self.info[ "port" ] ) );
 
 	def login( self ):
-		self.sock.send( "NICK " + self.info[ "nick" ] + "n" );
-		self.sock.send( "USER " + self.info[ "ident" ] + " " + self.info[ "ip" ] + " bla :" + self.info[ "realname" ] + "n" );
+		self.sock.send( "NICK " + self.info[ "nick" ] + "\r\n" );
+		self.sock.send( "USER " + self.info[ "nick" ] + " 8 * :" + self.info[ "realname" ] +"\r\n" );
 
 	def receive( self ):
 		line = self.sock.recv( 500 );
