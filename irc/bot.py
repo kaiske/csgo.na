@@ -29,8 +29,17 @@ class ircbot:
 
 	def main( self ):
 		if( self.data.find( "PING" ) != -1 ):
-			self.sock.send( "PONG " + self.data.split()[ 1 ] + "\r\n" );
-			print( self.data.split()[ 1 ] );
+			splits = self.data.split();
+			loopnum = 0;
+
+			for value in splits:
+				if( value == "PING" ):
+					print( splits[ loopnum + 1 ] );
+					self.sock.send( "PONG " + splits[ loopnum + 1 ] + "\r\n" );
+					break;
+
+				loopnum = loopnum + 1;
+
 			self.done = True;
 
 		if( self.done == True ):
