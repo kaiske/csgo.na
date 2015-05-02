@@ -14,13 +14,14 @@ class ircbot:
 
 		# bot info
 
-		"nick":		"kitty__",
-		"realname": "kitty___",
+		"nick":		"friend",
+		"realname": "GATHERBOT",
 
 		# irc info
 
 		"owner":	"kaiske",
-		"channel":	"#csgo.na"
+		"channel":	"#csgo.na",
+		"password":	"hellox86"
 	};
 
 	def connect( self ):
@@ -30,6 +31,7 @@ class ircbot:
 	def login( self ):
 		self.sock.send( "NICK " + self.info[ "nick" ] + "\r\n" );
 		self.sock.send( "USER " + self.info[ "nick" ] + " 8 * :" + self.info[ "realname" ] +"\r\n" );
+		self.sock.send( "PASSWORD " + self.info[ "password" ] + "\r\n" );
 		self.sock.send( "JOIN " + self.info[ "channel" ] + "\r\n" );
 
 	def receive( self ):
