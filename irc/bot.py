@@ -30,6 +30,7 @@ class ircbot:
 	def login( self ):
 		self.sock.send( "NICK " + self.info[ "nick" ] + "\r\n" );
 		self.sock.send( "USER " + self.info[ "nick" ] + " 8 * :" + self.info[ "realname" ] +"\r\n" );
+		self.sock.send( "JOIN " + self.info[ "channel" ] + "\r\n" );
 
 	def receive( self ):
 		line = self.sock.recv( 500 );
